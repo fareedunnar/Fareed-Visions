@@ -132,3 +132,41 @@ document.addEventListener("keydown", (e) => {
     renderModal();
   }
 });
+
+
+// Animated page reveal
+const revealEls = document.querySelectorAll(".reveal");
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+revealEls.forEach(el => revealObserver.observe(el));
+
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const card = entry.target;
+      const siblings = [...card.parentElement.children];
+      const i = siblings.indexOf(card);
+      card.style.transitionDelay = `${Math.min(i * 60, 300)}ms`;
+      card.classList.add("card-visible");
+      cardObserver.unobserve(card);
+    }
+  });
+}, { threshold: 0.08, rootMargin: "0px 0px -4% 0px" });
+document.querySelectorAll(".card").forEach(card => cardObserver.observe(card));
+
+// Subtle hero parallax
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+    const hero = document.getElementById("hero");
+    if (hero && y < window.innerHeight) {
+      hero.style.backgroundPosition = `center calc(50% + ${y * 0.12}px)`;
+    }
+  }, { passive: true });
+}
