@@ -237,44 +237,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// ===== Text cursor =====
+
+
+// ===== Static drafting cursor position =====
 document.addEventListener("DOMContentLoaded", () => {
-  const cursor = document.querySelector(".cursor-label");
+  const cursor = document.querySelector(".draft-cursor");
   if (!cursor) return;
 
-  let mouseX = 0, mouseY = 0;
-  let currentX = 0, currentY = 0;
-
   window.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  function tick() {
-    currentX += (mouseX - currentX) * 0.18;
-    currentY += (mouseY - currentY) * 0.18;
-    cursor.style.left = `${currentX}px`;
-    cursor.style.top = `${currentY}px`;
-    requestAnimationFrame(tick);
-  }
-  tick();
-
-  const show = (text, cls="") => {
-    cursor.textContent = text;
-    cursor.className = `cursor-label active ${cls}`.trim();
-  };
-
-  const hide = () => {
-    cursor.className = "cursor-label";
-  };
-
-  document.querySelectorAll(".card").forEach(el => {
-    el.addEventListener("mouseenter", () => show("OPEN", "open"));
-    el.addEventListener("mouseleave", hide);
-  });
-
-  document.querySelectorAll("a, button, .software span").forEach(el => {
-    el.addEventListener("mouseenter", () => show("VIEW", "link"));
-    el.addEventListener("mouseleave", hide);
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
   });
 });
