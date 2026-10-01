@@ -170,3 +170,96 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     }
   }, { passive: true });
 }
+
+
+// ===== Fareed Visions animation v2 =====
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("anim-ready");
+
+  const hero = document.getElementById("hero");
+  const heroVisual = document.querySelector(".hero-visual");
+
+  // Mirror the featured background image onto an actual animated layer.
+  if (hero && heroVisual) {
+    const bg = getComputedStyle(hero).backgroundImage;
+    if (bg && bg !== "none") {
+      heroVisual.style.backgroundImage = bg;
+      hero.style.backgroundImage = "none";
+    }
+  }
+
+  const revealItems = document.querySelectorAll(".reveal");
+  const cards = document.querySelectorAll(".card");
+
+  // Fallback for browsers without IntersectionObserver.
+  if (!("IntersectionObserver" in window)) {
+    revealItems.forEach(el => el.classList.add("visible"));
+    cards.forEach(el => el.classList.add("card-visible"));
+    return;
+  }
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        sectionObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12, rootMargin:"0px 0px -10% 0px"});
+
+  revealItems.forEach(el => sectionObserver.observe(el));
+
+  const cardObserver2 = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const card = entry.target;
+        const siblings = Array.from(card.parentElement.children);
+        const i = siblings.indexOf(card);
+        card.style.transitionDelay = `${Math.min(i * 75, 375)}ms`;
+        card.classList.add("card-visible");
+        cardObserver2.unobserve(card);
+      }
+    });
+  }, {threshold:0.08, rootMargin:"0px 0px -5% 0px"});
+
+  cards.forEach(card => cardObserver2.observe(card));
+
+  // More visible, but still subtle, hero parallax.
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    window.addEventListener("scroll", () => {
+      if (!heroVisual) return;
+      const y = Math.min(window.scrollY, window.innerHeight);
+      heroVisual.style.transform = `scale(1.02) translateY(${y * 0.07}px)`;
+    }, {passive:true});
+  }
+});
+
+
+// ===== Animated custom cursor =====
+document.addEventListener("DOMContentLoaded", () => {
+  const dot = document.querySelector(".cursor-dot");
+  const ring = document.querySelector(".cursor-ring");
+  if (!dot || !ring) return;
+
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  window.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.16;
+    ringY += (mouseY - ringY) * 0.16;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll("a,button,.card,.software span").forEach(el => {
+    el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
+    el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
+  });
+});
