@@ -96,7 +96,17 @@ const PORTFOLIO = {
       "images": [
         "assets/exteriors-11-contemporary-woodland-house-01.webp",
         "assets/exteriors-11-contemporary-woodland-house-02.webp",
-        "assets/exteriors-11-contemporary-woodland-house-03.webp"
+        "assets/exteriors-11-contemporary-woodland-house-03.webp",
+        "assets/exteriors-11-contemporary-woodland-house-04.webp"
+      ]
+    },
+    {
+      "name": "Modern Suburban Revival",
+      "images": [
+        "assets/exteriors-12-modern-suburban-revival-01.webp",
+        "assets/exteriors-12-modern-suburban-revival-02.webp",
+        "assets/exteriors-12-modern-suburban-revival-03.webp",
+        "assets/exteriors-12-modern-suburban-revival-04.webp"
       ]
     }
   ],
@@ -153,6 +163,15 @@ const PORTFOLIO = {
       "images": [
         "assets/interiors-07-compact-loft-van-house-01.webp",
         "assets/interiors-07-compact-loft-van-house-02.webp"
+      ]
+    },
+    {
+      "name": "Marble Serenity",
+      "images": [
+        "assets/interiors-08-marble-serenity-01.webp",
+        "assets/interiors-08-marble-serenity-02.webp",
+        "assets/interiors-08-marble-serenity-03.webp",
+        "assets/interiors-08-marble-serenity-04.webp"
       ]
     }
   ],
